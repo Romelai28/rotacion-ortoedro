@@ -31,18 +31,18 @@ clock = pygame.time.Clock()
 
 # CONFIGURACIONES INICIALES
 # Ángulos iniciales
-ang_x = 0
-ang_y = 0
-ang_z = 0
+ang_x = 1
+ang_y = 2
+ang_z = 3
 # Velocidades constantes
-vel_x = 0.001
-vel_y = 0.012
-vel_z = 0.02
+vel_x = 0.03 * 0.5
+vel_y = 0.1 * 0.5
+vel_z = 0.01 * 0.5
 # Puntos por componente (Su valor absoluto) y eje de rotación
-x_i = -1
-x_f = 2
-y_i = -1
-y_f = 2
+x_i = -2
+x_f = 1
+y_i = -2
+y_f = 1
 z_i = -1
 z_f = 2
 
@@ -180,15 +180,18 @@ while True:
     matrix_proyectada = []
 
     for i in range(len(points)):
-        vector_rotado_1 = np.matrix(np.dot(rotation_x, points[i].reshape(3, 1)))
-        vector_rotado_2 = np.matrix(np.dot(rotation_y, vector_rotado_1))
-        vector_rotado_3 = np.matrix(np.dot(rotation_z, vector_rotado_2))
+        # Tomo un vector de la matriz:
+        vector_rotado_1 = np.matrix(np.dot(rotation_x, points[i].reshape(3, 1)))  # Aplico transformación en x.
+        vector_rotado_2 = np.matrix(np.dot(rotation_y, vector_rotado_1))  # Aplico transformación en y.
+        vector_rotado_3 = np.matrix(np.dot(rotation_z, vector_rotado_2))  # Aplico transformación en z. Vector final.
 
+        # Lo proyecto al vector final a dos dimensiones.
         vector_proyectado_2d = np.matrix(np.dot(p_matrix, vector_rotado_3))
 
         matrix_sin_proyectar.append(vector_rotado_3)
         matrix_proyectada.append(vector_proyectado_2d)
 
+    # El for loop, el x_component, y_component son necesarios para mostrar puntos, enunmerar aristas y resaltar aristas.
     for i in range(len(matrix_proyectada)):
 
         x_component = matrix_proyectada[i].item(0)
